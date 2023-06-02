@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card, Form, Button, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:3000/users/login';
+const API_BASE_URL = 'https://projek-kelompok-8.as.r.appspot.com/login';
 
 function LoginPage() {
   const navigate = useNavigate();

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000/users/register';
+const API_BASE_URL = 'https://projek-kelompok-8.as.r.appspot.com/register';
 
 function RegisterPage() {
   const navigate = useNavigate();
