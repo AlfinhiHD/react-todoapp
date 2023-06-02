@@ -8,6 +8,7 @@ const API_BASE_URL = 'http://localhost:3000/users/login';
 function LoginPage() {
   const navigate = useNavigate();
 
+  const [message, setMessage] = useState("");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -18,25 +19,22 @@ function LoginPage() {
       const response = await axios.post(API_BASE_URL, {
         email: email,
         password: password
-      },
-        {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
-          }
-        });
+      },);
       console.log(response.data);
 
       const user = {
-        token: data.token,
-        userid: data.userid
+        token: response.data.token,
+        userid: response.data.id
       }
 
       sessionStorage.setItem("user", JSON.stringify(user));
 
-      navigate("/");
-    } catch (error) {
+      
 
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error.response.data.message)
+      setMessage(error.response.data.message)
       console.error(error);
     }
   };
@@ -67,6 +65,8 @@ function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
+
+            <small className='text-danger'>{message}</small>
 
             <div className='d-grid mb-2'>
               <Button variant="primary" type="submit">

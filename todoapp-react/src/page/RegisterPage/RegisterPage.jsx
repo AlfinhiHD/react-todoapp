@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api/login';
+const API_BASE_URL = 'http://localhost:3000/users/register';
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -21,9 +21,9 @@ function RegisterPage() {
     }
 
     try {
-      const response = await axios.post('https://example.com/api/register', {
-        email,
-        password,
+      const response = await axios.post(API_BASE_URL, {
+        email : email,
+        password : password,
       });
 
       navigate("/login")
