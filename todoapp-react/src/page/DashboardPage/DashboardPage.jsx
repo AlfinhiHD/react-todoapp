@@ -90,6 +90,19 @@ const TodoList = () => {
     }
   };
 
+  const deleteAllTodo = async () => {
+    try {
+      await axios.delete(`${API_BASE_URL}/delete/${user.userid}`, {
+        headers: {
+          'token': user.token
+        }
+      });
+      setTodos([])
+    } catch (error) {
+      console.error('Error deleting todo:', error);
+    }
+  };
+
   const filterTodos = (todo) => {
     if (filter === '') {
       return true;
@@ -139,6 +152,10 @@ const TodoList = () => {
         <Dropdown.Item eventKey="Progress">Progress</Dropdown.Item>
         <Dropdown.Item eventKey="FINISH">Finish</Dropdown.Item>
       </DropdownButton>
+      
+      <Button variant="danger" onClick={() => deleteAllTodo()}>
+        Clear Todos
+      </Button>
 
       <ListGroup className="mt-4">
         {todos.filter(filterTodos).map((todo) => (
