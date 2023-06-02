@@ -12,7 +12,7 @@ function LandingPage() {
           <div className="col-lg-6">
             <h1>Welcome to TodoList App</h1>
             <p>Start managing your tasks and stay organized!</p>
-            <p>Ini Branch Development!</p>
+            <p>Ini Branch Main!</p>
             <Link to="/login" className="btn btn-primary">
               Get Started
             </Link>
