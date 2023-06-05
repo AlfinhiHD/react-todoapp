@@ -1,0 +1,41 @@
+// import React, { useEffect } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { createItem, fetchItems, updateItem, deleteItem } from './actions';
+
+// const ItemComponent = () => {
+//   const dispatch = useDispatch();
+//   const items = useSelector(state => state.items);
+
+//   useEffect(() => {
+//     dispatch(fetchItems());
+//   }, [dispatch]);
+
+//   const handleCreate = () => {
+//     const newItem = { id: 1, name: 'New Item' };
+//     dispatch(createItem(newItem));
+//   };
+
+//   const handleUpdate = (itemId, updatedName) => {
+//     const updatedItem = { id: itemId, name: updatedName };
+//     dispatch(updateItem(itemId, updatedItem));
+//   };
+
+//   const handleDelete = (itemId) => {
+//     dispatch(deleteItem(itemId));
+//   };
+
+//   return (
+//     <div>
+//       <button onClick={handleCreate}>Create Item</button>
+//       {items.map(item => (
+//         <div key={item.id}>
+//           <span>{item.name}</span>
+//           <button onClick={() => handleUpdate(item.id, 'Updated Name')}>Update</button>
+//           <button onClick={() => handleDelete(item.id)}>Delete</button>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
+// export default ItemComponent;

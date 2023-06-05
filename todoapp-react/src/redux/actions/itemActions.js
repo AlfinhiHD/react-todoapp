@@ -1,11 +1,11 @@
-import axios from 'axios';
+import api from '../api/api';
 
 // Create
 export const createItem = (item) => {
   return (dispatch) => {
     dispatch({ type: 'CREATE_ITEM_REQUEST' });
 
-    axios.post('/api/items', item)
+    api.post('/products', item)
       .then(response => {
         dispatch({
           type: 'CREATE_ITEM_SUCCESS',
@@ -26,7 +26,7 @@ export const fetchItems = () => {
   return (dispatch) => {
     dispatch({ type: 'FETCH_ITEMS_REQUEST' });
 
-    axios.get('/api/items')
+    api.get('/products')
       .then(response => {
         dispatch({
           type: 'FETCH_ITEMS_SUCCESS',
@@ -47,7 +47,7 @@ export const updateItem = (itemId, updatedItem) => {
   return (dispatch) => {
     dispatch({ type: 'UPDATE_ITEM_REQUEST' });
 
-    axios.put(`/api/items/${itemId}`, updatedItem)
+    api.put(`/items/${itemId}`, updatedItem)
       .then(response => {
         dispatch({
           type: 'UPDATE_ITEM_SUCCESS',
@@ -68,7 +68,7 @@ export const deleteItem = (itemId) => {
   return (dispatch) => {
     dispatch({ type: 'DELETE_ITEM_REQUEST' });
 
-    axios.delete(`/api/items/${itemId}`)
+    api.delete(`/products/${itemId}`)
       .then(() => {
         dispatch({
           type: 'DELETE_ITEM_SUCCESS',

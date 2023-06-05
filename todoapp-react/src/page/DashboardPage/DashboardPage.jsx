@@ -3,7 +3,7 @@ import { Form, Button, DropdownButton, Dropdown, ListGroup, Container } from 're
 import axios from 'axios';
 import Header from '../../component/Header';
 
-const API_BASE_URL = 'https://projek-kelompok-8.as.r.appspot.com/todos';
+const API_BASE_URL = '';
 
 // const TodoStatus = {
 //   TODO: 'Todo',
