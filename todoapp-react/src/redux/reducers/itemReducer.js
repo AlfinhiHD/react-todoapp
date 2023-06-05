@@ -4,7 +4,7 @@ const initialState = {
     error: null
   };
   
-  const reducer = (state = initialState, action) => {
+  const itemReducer = (state = initialState, action) => {
     switch (action.type) {
       case 'CREATE_ITEM_REQUEST':
       case 'FETCH_ITEMS_REQUEST':
@@ -54,3 +54,8 @@ const initialState = {
         return state;
     }
   };
+   
+  export default itemReducer;
+
+ 
+ 
