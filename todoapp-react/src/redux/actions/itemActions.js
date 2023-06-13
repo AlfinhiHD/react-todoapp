@@ -47,7 +47,7 @@ export const updateItem = (itemId, updatedItem) => {
   return (dispatch) => {
     dispatch({ type: 'UPDATE_ITEM_REQUEST' });
 
-    api.put(`/items/${itemId}`, updatedItem)
+    api.put(`/products/${itemId}`, updatedItem)
       .then(response => {
         dispatch({
           type: 'UPDATE_ITEM_SUCCESS',

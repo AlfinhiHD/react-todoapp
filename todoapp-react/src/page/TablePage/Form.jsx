@@ -2,48 +2,80 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import uuid from 'react-uuid';
 import { useDispatch, useSelector } from "react-redux";
-import { createItem } from "../../redux/actions/itemActions";
+import { createItem, updateItem } from "../../redux/actions/itemActions";
+import { useParams } from 'react-router-dom';
 
 const Form = () => {
+
+    const { itemId } = useParams();
+    const items = useSelector(state => state.items);
     const dispatch = useDispatch()
 
+    const isEditMode = !!itemId; // Cek apakah dalam mode pengeditan
+
+    let initialValues = {
+        productId: "",
+        productName: "",
+        productCathegory: "",
+        productImage: "",
+        productFreshness: "",
+        productDesc: "",
+        productPrice: ""
+    };
+
+    // Jika dalam mode pengeditan, isi initialValues dengan nilai item yang sesuai
+    if (isEditMode) {
+        const item = items.items.find(item => item.productId === itemId);
+        if (item) {
+            initialValues = {
+                productId: item.productId,
+                productName: item.productName,
+                productCathegory: item.productCathegory,
+                productImage: item.productImage,
+                productFreshness: item.productFreshness,
+                productDesc: item.productDesc,
+                productPrice: item.productPrice
+            };
+        }
+    }
+
     const formik = useFormik({
-        initialValues: {
-            productId: uuid(),
-            productName: "",
-            productCathegory: "",
-            productImage: "",
-            productFreshness: "",
-            productDesc: "",
-            productPrice: ""
-        },
+        initialValues: initialValues,
         validationSchema: Yup.object().shape({
             productName: Yup.string()
-				.matches(/^[a-zA-Z0-9 ]+$/, 'Name must not contain symbols')
-				.max(10, 'Product Name must not exceed 10 characters')
-				.required('The product name field must be filled in'),
-			productCathegory: Yup.string().required(
-				'The product category field must be filled in'
-			),
-			productImage: Yup.mixed().required(
-				'The image of product field must be filled in'
-			),
-			productFreshness: Yup.string().required(
-				'The product freshness field must be filled in'
-			),
-			productDesc: Yup.string()
-				.matches(/^[a-zA-Z0-9 ]+$/, 'Description must not contain symbols')
-				.required('The additional description field must be filled in'),
-			productPrice: Yup.number().required(
-				'The product price field must be filled in'
-			),
-		}),
-        onSubmit : (values, actions) => {
+                .matches(/^[a-zA-Z0-9 ]+$/, 'Name must not contain symbols')
+                .max(10, 'Product Name must not exceed 10 characters')
+                .required('The product name field must be filled in'),
+            productCathegory: Yup.string().required(
+                'The product category field must be filled in'
+            ),
+            productImage: Yup.mixed().required(
+                'The image of product field must be filled in'
+            ),
+            productFreshness: Yup.string().required(
+                'The product freshness field must be filled in'
+            ),
+            productDesc: Yup.string()
+                .required('The additional description field must be filled in'),
+            productPrice: Yup.number().required(
+                'The product price field must be filled in'
+            ),
+        }),
+        onSubmit: (values, actions) => {
             const newValues = { ...values, productId: uuid() };
-            dispatch(createItem(newValues));
+
+            if (isEditMode) {
+                console.log(itemId)
+                console.log(values)
+                dispatch(updateItem(itemId, values)); 
+            } else {
+                
+                dispatch(createItem(newValues));
+            }
+            
         },
     })
-    
+
     return (
         <form onSubmit={formik.handleSubmit} className="container mt-5 w-50" id="productForm">
             <h2>Detail Product</h2>
@@ -65,7 +97,7 @@ const Form = () => {
                     }
                 />
                 {formik.errors.productName && formik.touched.productName && (
-                        <small className='text-danger'>{formik.errors.productName}</small>
+                    <small className='text-danger'>{formik.errors.productName}</small>
                 )}
             </div>
             <div className="mb-4 w-50">
@@ -98,27 +130,27 @@ const Form = () => {
                     </option>
                 </select>
                 {formik.errors.productCathegory && formik.touched.productCathegory && (
-                        <small className='text-danger'>{formik.errors.productCathegory}</small>
+                    <small className='text-danger'>{formik.errors.productCathegory}</small>
                 )}
             </div>
             <div className="mb-4 w-50">
                 <label className="form-label" htmlFor="productImage">
                     Image of Product
                 </label>
-                <input 
-                name="productImage" 
-                value={formik.values.productImage} 
-                type="file" 
-                onChange={formik.handleChange} 
-                onBlur={formik.handleBlur}
-                className={
-                    formik.errors.productImage && formik.touched.productImage
-                        ? 'form-control mt-1 is-invalid'
-                        : 'form-control mt-1'
-                }
+                <input
+                    name="productImage"
+                    value={formik.values.productImage}
+                    type={!isEditMode ? "file" : "text"}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={
+                        formik.errors.productImage && formik.touched.productImage
+                            ? 'form-control mt-1 is-invalid'
+                            : 'form-control mt-1'
+                    }
                 />
                 {formik.errors.productImage && formik.touched.productImage && (
-                        <small className='text-danger'>{formik.errors.productImage}</small>
+                    <small className='text-danger'>{formik.errors.productImage}</small>
                 )}
             </div>
             <div className="mb-4">
@@ -158,12 +190,12 @@ const Form = () => {
                         value="Refurbished"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        
+
                     />
                     <label className="form-check-label" htmlFor="refurbished">Refurbished</label>
                 </div>
                 {formik.errors.productFreshness && formik.touched.productFreshness && (
-                        <small className='text-danger'>{formik.errors.productFreshness}</small>
+                    <small className='text-danger'>{formik.errors.productFreshness}</small>
                 )}
             </div>
             <div className="mb-4">
@@ -183,27 +215,27 @@ const Form = () => {
                     }
                 />
                 {formik.errors.productDesc && formik.touched.productDesc && (
-                        <small className='text-danger'>{formik.errors.productDesc}</small>
+                    <small className='text-danger'>{formik.errors.productDesc}</small>
                 )}
             </div>
             <div className="mb-4 w-50">
                 <label className="form-label" htmlFor="productPrice">
                     Product Price
                 </label>
-                <input 
-                type="number" 
-                name="productPrice" 
-                value={formik.values.productPrice} 
-                onChange={formik.handleChange} 
-                onBlur={formik.handleBlur}
-                className={
-                    formik.errors.productPrice && formik.touched.productPrice
-                        ? 'form-control mt-1 is-invalid'
-                        : 'form-control mt-1'
-                }
+                <input
+                    type="number"
+                    name="productPrice"
+                    value={formik.values.productPrice}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={
+                        formik.errors.productPrice && formik.touched.productPrice
+                            ? 'form-control mt-1 is-invalid'
+                            : 'form-control mt-1'
+                    }
                 />
                 {formik.errors.productPrice && formik.touched.productPrice && (
-                        <small className='text-danger'>{formik.errors.productPrice}</small>
+                    <small className='text-danger'>{formik.errors.productPrice}</small>
                 )}
             </div>
             <button

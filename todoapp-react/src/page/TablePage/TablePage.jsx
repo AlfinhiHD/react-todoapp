@@ -1,11 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deleteItem, fetchItems } from "../../redux/actions/itemActions";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TablePage = () => {
 
     const dispatch = useDispatch();
     const items = useSelector(state => state.items);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(fetchItems());
@@ -15,6 +18,10 @@ const TablePage = () => {
 
     const handleDelete = (itemId) => {
         dispatch(deleteItem(itemId));
+    };
+
+    const handleEdit = (itemId) => {
+        navigate(`/form/${itemId}`);
     };
 
     return (
@@ -46,7 +53,7 @@ const TablePage = () => {
                             <td>{product.productId}</td>
                             <td>
                                 <button onClick={() => handleDelete(product.productId)}>Delete</button>
-                                <button>Edit</button>
+                                <button onClick={() => handleEdit(product.productId)}>Edit</button>
                             </td>
                         </tr>
                     ))}
